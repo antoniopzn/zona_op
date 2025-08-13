@@ -22,7 +22,9 @@ local function isIllegal(user_id)
     return true
   end
   for _,grp in ipairs(Config.IllegalGroups or {}) do
-    if vRP.hasGroup(user_id, grp) then return true end
+    if vRP.hasGroup(user_id, grp) then
+      return true
+    end
   end
   return false
 end
@@ -39,11 +41,11 @@ local function broadcast(msg)
   TriggerClientEvent("chat:addMessage", -1, { args = { "[ZONA OP]", msg } })
 end
 
-local function debugPrint(...)
+local function dbg(...)
   if Config.Debug then print("[ZONA_OP]", ...) end
 end
 
--- envia a zona com timeLeftMs calculado no servidor (client não usa os.*)
+-- emite sync com tempo restante em ms (client não usa os.*)
 local function emitSync(target)
   if not currentZone then
     TriggerClientEvent("zona_op:clearZone", target)
@@ -87,12 +89,12 @@ RegisterCommand("zonaop", function(source, args)
   if duration < 10 then duration = 10 end
   if radius   < 20 then radius   = 20 end
 
-  -- peça a posição ao client (evita falha de getPosition em algumas bases)
+  -- pede posição ao client do policial
   TriggerClientEvent("zona_op:requestPos", source, duration, radius)
-  debugPrint("Solicitada posição ao client", user_id, "dur=", duration, "rad=", radius)
+  dbg("Solicitada posição ao client", user_id, "dur=", duration, "rad=", radius)
 end)
 
--- recebe do client a posição do policial
+-- recebe do client a posição para criar a zona
 RegisterNetEvent("zona_op:reportPos")
 AddEventHandler("zona_op:reportPos", function(x,y,z,duration,radius)
   local src = source
@@ -108,18 +110,17 @@ AddEventHandler("zona_op:reportPos", function(x,y,z,duration,radius)
   }
   lastCreateAt[user_id] = now
 
-  -- sincroniza com todos já com timeLeftMs
   emitSync(-1)
   sendMsg(src, "[ZONA OP]", ("Zona criada por %ds (raio %.0fm)."):format(duration, radius), "sucesso")
   broadcast(("Uma zona de operação policial foi ativada! (%ds, raio %.0fm)"):format(duration, radius))
-  debugPrint("Zona criada em", x, y, z, "dur=", duration, "rad=", radius)
+  dbg("Zona criada em", x, y, z, "dur=", duration, "rad=", radius)
 
   SetTimeout(duration * 1000, function()
     if currentZone and os.time() >= currentZone.expires then
       currentZone = nil
       TriggerClientEvent("zona_op:clearZone", -1)
       broadcast("A zona de operação policial foi encerrada.")
-      debugPrint("Zona expirada e limpa")
+      dbg("Zona expirada e limpa")
     end
   end)
 end)
@@ -137,7 +138,7 @@ RegisterCommand("zonaopoff", function(source)
     currentZone = nil
     TriggerClientEvent("zona_op:clearZone", -1)
     broadcast("A zona de operação policial foi encerrada manualmente.")
-    debugPrint("Zona encerrada manualmente por", user_id)
+    dbg("Zona encerrada manualmente por", user_id)
   else
     sendMsg(source, "[ZONA OP]", "Não há zona ativa.", "aviso")
   end
@@ -163,7 +164,7 @@ AddEventHandler("zona_op:checkInside", function(px,py,pz)
     if now - last >= (Config.AlertCooldown or 10) then
       lastAlertAt[user_id] = now
       TriggerClientEvent("zona_op:illegalAlert", src, Config.AlertText or "Você entrou em uma zona de operação da polícia!")
-      debugPrint("Alerta enviado a ilegal", user_id)
+      dbg("Alerta enviado a ilegal", user_id)
     end
   end
 end)

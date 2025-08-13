@@ -13,13 +13,13 @@ Config.ZoneDuration = 300   -- segundos
 Config.ZoneRadius   = 100.0 -- metros
 
 -- QUEM É ILEGAL (recebe alerta ao entrar)
-Config.IllegalPermission = "perm.ilegal"  -- padrão FOXZIN
-Config.IllegalGroups = {                   -- opcional (deixe vazio se não usar grupos)
+Config.IllegalPermission = "perm.ilegal"  -- padrão
+Config.IllegalGroups = {                   -- opcional
   -- "traficante","milicia","mafia","cv","tcp"
 }
 
 -- Anti-spam de alerta (s)
-Config.AlertCooldown = 30
+Config.AlertCooldown = 60
 
 -- Visual (blips/marker)
 Config.BlipColor   = 1   -- vermelho

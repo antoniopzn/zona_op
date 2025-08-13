@@ -3,7 +3,7 @@ game 'gta5'
 
 author 'TONHÃO'
 description 'Zona de Operação Policial'
-version '1.0.3'
+version '1.0.4'
 
 client_scripts {
   'config.lua',
