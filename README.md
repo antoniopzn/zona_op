@@ -8,8 +8,8 @@ Jogadores pertencentes a grupos **ilegais** que entrarem nesta área recebem um 
 ## 🚀 Funcionalidades
 
 - **Ativação manual por comando** (`/zonaop`) apenas para policiais (`perm.policia`).
-- **Também é possível habilitar pelo comando `/zonaop [tempo] [raio]`.
-- **É possível o policial desabilitar a área estando dentro dela com o comando `/zonaopoff`.
+- Também é possível habilitar pelo comando `/zonaop [tempo] [raio]`.
+- É possível o policial desabilitar a área estando dentro dela com o comando `/zonaopoff`.
 - **Área visível no mapa/minimapa** com:
   - Círculo de raio configurável.
   - Ícone central com texto personalizado.
