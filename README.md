@@ -20,7 +20,7 @@ Jogadores pertencentes a grupos **ilegais** que entrarem nesta área recebem um 
 ## 📋 Requisitos
 
 - **FiveM** (testado na build 3258)
-- **Framework vRPex** (versão Foxzin v3)
+- **Framework vRPex** (versão)
 - Permissões configuradas no `permissions.cfg`:
   ```ini
   add_ace group.policia perm.policia allow
